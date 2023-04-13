@@ -108,7 +108,7 @@ form {
     height: 100%;
 }
 
-@media (max-width: 400px) {
+@media (max-width: 500px) {
     .top__item{
         background-image: url(images/pattern-bg-mobile.png);
         background-position: center;
