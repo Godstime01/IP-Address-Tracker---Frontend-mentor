@@ -1,64 +1,84 @@
+:root{
+    --VeryDarkGray: hsl(0, 0%, 17%);
+    --DarkGray: hsl(0, 0%, 59%);
+    --white: hsl(0, 0%, 100%);
+}
+
+*{
+    box-sizing: border-box;
+}
+
 html {
-    font-family: 'Rubik', sans-serif;
+ font-size: 18px;   
 }
 
 body {
     padding: 0;
     margin: 0;
+    font-family: 'Rubik', sans-serif;
+    font-size: 1rem;
+    min-height: 100vh;
 }
 
+h1{
+    font-size: 1.5rem;
+    text-transform: capitalize;
+    color: var(--white);
+}
+
+p{
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--VeryDarkGray);
+}
+
+.sr-only {
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+
 .container {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-rows: 1fr 2fr;
     height: 100vh;
-    background-color: blue;
 }
 
 .top__item {
-    flex-grow: 1;
-    flex-basis: 30%;
     text-align: center;
-    padding-inline: 6rem;
-    padding-block-end: 4rem;
     background-image: url(images/pattern-bg-desktop.png);
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
 }
 
-.title {
-    color: white;
-    font-size: 2rem;
-    font-weight: 400;
-    text-transform: uppercase;
-}
-
-::placeholder {
-    color: hsl(0, 0%, 59%);
+.ip_address::placeholder {
+    color: var(--VeryDarkGray);
+    font-weight: 500;
 }
 
 form {
     display: flex;
-    /* gap: 1em; */
-    width: 70%;
+    width: min(100% - 20%, 25rem);
     margin: auto;
-    /* margin-block-end: 3rem; */
 }
 
 .ip_address {
-    padding: 1em;
-    border-radius: 0.5rem 0 0 .5rem;
+    padding: 1.5em;
+    border-radius: 1rem 0 0 1rem;
     border: none;
-    flex-grow: 3;
-    flex-basis: 600px;
+    flex-grow: 2;
 }
 
 .btn {
     background-color: hsl(0, 0%, 17%);
     padding: 1em;
-    border-radius: 0 0.5rem .5rem 0;
+    border-radius: 0 1em 1em 0;
     border: none;
-    /* flex-grow: 1; */
     display: inline-block;
 }
 
@@ -69,7 +89,7 @@ form {
 }
 
 .overlay {
-    border-radius: .5rem;
+    border-radius: 1rem;
     padding: 1rem;
     display: flex;
     justify-content: space-around;
@@ -85,7 +105,7 @@ form {
 
 
 .item {
-    border-right: 1px hsl(0, 0%, 59%) solid;
+    border-right: .1px rgba(167, 167, 167, 0.822) solid;
     text-align: left;
     flex-grow: 1;
 }
@@ -96,21 +116,19 @@ form {
 
 .item__title {
     color: hsl(0, 0%, 59%);
-    font-weight: 500;
-    /* letter-spacing: 5px; */
-    text-transform: uppercase;
-}
-
-.item h2 {
     font-weight: 700;
+    font-size: .5rem;
+    letter-spacing: 4px;
+    text-align: left;
+    text-transform: uppercase;
 }
 
 #map {
     height: 100%;
 }
 
-@media (max-width: 400px) {
-    .top__item {
+@media (max-width: 600px) {
+    .top__item{
         background-image: url(images/pattern-bg-mobile.png);
         background-position: center;
         background-size: cover;
@@ -125,7 +143,11 @@ form {
     .item {
         border: none;
         text-align: center;
-        font-size: 15px;
+    }
+
+    .item__title{
+        font-size: 1em;
+        text-align: center;
     }
 
     .overlay {

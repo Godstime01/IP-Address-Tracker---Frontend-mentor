@@ -21,50 +21,44 @@
 
 <body>
 
-  <div class="container">
-    <div class="top__item">
-      <h2 class="title">Malaria burden reporting system</h2>
+  <main class="container">
 
+    <section class="top__item">
+      <h1 class="title">Ip Address Tracker</h1>
       <form action="" id="form" method="post">
-        <select class="ip_address" name="select" id="select">
-          <option value=""></option>
-        </select>
-        <!-- <input type="text" class="ip_address" placeholder=" Search for any IP address or domain"> -->
-        <button type="submit" class="btn"><img src="images/icon-arrow.svg" alt="icon-arrow"></button>
+        <label for="ip" class="sr-only">IP address</label>
+        <input type="text" id="ip" class="ip_address" placeholder="Search for any IP address or domain">
+        <button type="submit" class="btn"><img src="images/icon-arrow.svg" alt="image icon for submit button"></button>
       </form>
-    </div>
+    </section>
 
-    <div class="bottom__item">
-      <div class="overlay">
+    <section class="bottom__item">
+      <section class="overlay">
 
         <div class="item">
-          <div class="item__title">Direct Cost</div>
-          <h2 class="ip">
-
-          </h2>
+          <h3 class="item__title">Direct Cost</h3>
+          <p class="ip"></p>
         </div>
 
         <div class="item">
-          <div class="item__title">Indirect Cost</div>
-          <h2 class="location"></h2>
+          <h3 class="item__title">Indirect Cost</h3>
+          <p class="location"></p>
         </div>
 
         <div class="item">
-          <div class="item__title">Total Cost</div>
-          <h2 class="timezone"></h2>
+          <h3 class="item__title">Total Cost</h3>
+          <p class="timezone"></p>
         </div>
 
         <div class="item">
-          <div class="item__title">Remark</div>
-          <h2 class="isp"></h2>
+          <h3 class="item__title">Remark</h3>
+          <p class="isp"></p>
         </div>
-
-
-      </div>
+      </section>
       <div id="map">
 
       </div>
-    </div>
+    </section>
 
     <div class="loading">
       <div class="lds-ripple">
@@ -72,84 +66,9 @@
         <div></div>
       </div>
     </div>
-  </div>
+  </main>
 
-  <script>
-
-    const form = document.getElementById("form");
-    const select = document.querySelector(".ip_address");
-    const btn = document.querySelector(".btn");
-    const items = document.querySelectorAll(".item")
-    let DATA = {}
-
-    window.addEventListener("load", (event) => {
-      fetch("data.json")
-        .then(res => res.json())
-        .then(data => {
-          document.querySelector(".loading").style.display = "None";
-
-          data.map(item => {
-            // console.log(item)
-            myOption = document.createElement("option");
-            myOption.text = item.location;
-            myOption.value = item.location;
-            select.appendChild(myOption);
-          })
-          DATA = data
-          
-        })
-        mapLocation(4.623275, 7.766819)
-    });
-
-
-    function mapLocation(lat, lng) {
-      var myIcon = L.icon({
-        iconUrl: '/images/icon-location.svg',
-        iconSize: [20, 40],
-        iconAnchor: [22, 94],
-      });
-
-      map.setView([lat, lng], 14)
-
-      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 13,
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-      }).addTo(map);
-
-      var marker = L.marker([lat, lng], { icon: myIcon }).addTo(map);
-    }
-
-    // Map
-    var map = L.map('map').setView([51.505, -0.09], 13);
-
-    
-    form.addEventListener("submit", e => {
-      e.preventDefault()
-
-      value = select.options[select.selectedIndex].value.toLowerCase();
-      // console.log(DATA)
-      
-      DATA.map(item => {
-        
-        console.log(item)
-        if(item.location == value){
-          const lat = item.pos[0]
-          const lng = item.pos[1];
-          mapLocation(lat, lng)
-          
-          items[0].lastElementChild.innerText = item.d_cost;
-          items[1].lastElementChild.innerText = item.in_cost;
-          items[2].lastElementChild.innerText = item.total;
-          items[3].lastElementChild.innerText = item.remark;
-        }
-      })
-      console.log(DATA[value])
-      const [lat, lng] = DATA[value]
-      
-
-    })
-
-  </script>
+  <script src="script.js"></script>
 </body>
 
 </html>
