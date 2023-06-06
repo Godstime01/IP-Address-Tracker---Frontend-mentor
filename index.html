@@ -17,15 +17,19 @@
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 
-  <title>Frontend Mentor | IP Address Tracker</title>
+  <title>IP Address Tracker</title>
+
 <body>
 
   <div class="container">
     <div class="top__item">
-      <h2 class="title">IP Address Tracker</h2>
+      <h2 class="title">Malaria burden reporting system</h2>
 
       <form action="" id="form" method="post">
-        <input type="text" class="ip_address" placeholder=" Search for any IP address or domain">
+        <select class="ip_address" name="select" id="select">
+          <option value=""></option>
+        </select>
+        <!-- <input type="text" class="ip_address" placeholder=" Search for any IP address or domain"> -->
         <button type="submit" class="btn"><img src="images/icon-arrow.svg" alt="icon-arrow"></button>
       </form>
     </div>
@@ -34,25 +38,25 @@
       <div class="overlay">
 
         <div class="item">
-          <div class="item__title">IP Address</div>
+          <div class="item__title">Direct Cost</div>
           <h2 class="ip">
-            jasl road
+
           </h2>
         </div>
 
         <div class="item">
-          <div class="item__title">Location</div>
+          <div class="item__title">Indirect Cost</div>
           <h2 class="location"></h2>
         </div>
 
         <div class="item">
-          <div class="item__title">Timezone</div>
+          <div class="item__title">Total Cost</div>
           <h2 class="timezone"></h2>
         </div>
 
         <div class="item">
-          <div class="item__title">ISP</div>
-          <h2 class="isp">Lorem, ipsum.</h2>
+          <div class="item__title">Remark</div>
+          <h2 class="isp"></h2>
         </div>
 
 
@@ -63,86 +67,87 @@
     </div>
 
     <div class="loading">
-      <div class="lds-ripple"><div></div><div></div></div>
+      <div class="lds-ripple">
+        <div></div>
+        <div></div>
+      </div>
     </div>
   </div>
 
   <script>
 
     const form = document.getElementById("form");
-    const input = document.querySelector(".ip_address");
+    const select = document.querySelector(".ip_address");
     const btn = document.querySelector(".btn");
     const items = document.querySelectorAll(".item")
-    var url = `https://geo.ipify.org/api/v2/country,city?apiKey=at_nN4XWM56D9DNDONEfux3Xgchvx2dD`;
+    let DATA = {}
 
-
-    function callGeoLocationApi(url) {
-      fetch(url)
+    window.addEventListener("load", (event) => {
+      fetch("data.json")
         .then(res => res.json())
         .then(data => {
           document.querySelector(".loading").style.display = "None";
 
-
-          let { ip, location: { city, country, timezone, lat, lng }, as, isp } = data
-          items[0].lastElementChild.innerText = ip;
-          items[1].lastElementChild.innerText = `${city}, ${country}`
-          items[2].lastElementChild.innerText = timezone;
-          items[3].lastElementChild.innerText = isp;
-
-         mapLocation(lat, lng);
+          data.map(item => {
+            // console.log(item)
+            myOption = document.createElement("option");
+            myOption.text = item.location;
+            myOption.value = item.location;
+            select.appendChild(myOption);
+          })
+          DATA = data
+          
         })
-        .catch(err => console.log("error"))
-    }
+        mapLocation(4.623275, 7.766819)
+    });
 
-    function mapLocation(lat, lng){
+
+    function mapLocation(lat, lng) {
       var myIcon = L.icon({
         iconUrl: '/images/icon-location.svg',
         iconSize: [20, 40],
         iconAnchor: [22, 94],
       });
 
-      map.setView([lat, lng], 17)
+      map.setView([lat, lng], 14)
 
       L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 13,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
       }).addTo(map);
-    
-    var marker = L.marker([lat, lng], { icon: myIcon }).addTo(map);
+
+      var marker = L.marker([lat, lng], { icon: myIcon }).addTo(map);
     }
 
     // Map
-
     var map = L.map('map').setView([51.505, -0.09], 13);
 
     
-
-    const validateInput = (value) => {
-      if (/^(?!0)(?!.*\.$)((1?\d?\d|25[0-5]|2[0-4]\d)(\.|$)){4}$/.test(value)) {
-        return true
-      }
-      return false
-    }
-
-
-
     form.addEventListener("submit", e => {
       e.preventDefault()
 
-      if (input.value.trim() == "") {
-        alert("Invalid address")
-        return
-      } else {
-        // const valid = validateInput(input.value);
-        // console.log(valid)
-        // if (valid){
-        console.log("submitted")
-        callGeoLocationApi(`https://geo.ipify.org/api/v2/country,city?apiKey=at_nN4XWM56D9DNDONEfux3Xgchvx2dD&ipAddress=${input.value}`)
-        // }
-      }
+      value = select.options[select.selectedIndex].value.toLowerCase();
+      // console.log(DATA)
+      
+      DATA.map(item => {
+        
+        console.log(item)
+        if(item.location == value){
+          const lat = item.pos[0]
+          const lng = item.pos[1];
+          mapLocation(lat, lng)
+          
+          items[0].lastElementChild.innerText = item.d_cost;
+          items[1].lastElementChild.innerText = item.in_cost;
+          items[2].lastElementChild.innerText = item.total;
+          items[3].lastElementChild.innerText = item.remark;
+        }
+      })
+      console.log(DATA[value])
+      const [lat, lng] = DATA[value]
+      
+
     })
-    
-    callGeoLocationApi(`https://geo.ipify.org/api/v2/country,city?apiKey=at_nN4XWM56D9DNDONEfux3Xgchvx2dD`)
 
   </script>
 </body>

@@ -30,6 +30,7 @@ body {
     color: white;
     font-size: 2rem;
     font-weight: 400;
+    text-transform: uppercase;
 }
 
 ::placeholder {
@@ -109,23 +110,25 @@ form {
 }
 
 @media (max-width: 400px) {
-    .top__item{
+    .top__item {
         background-image: url(images/pattern-bg-mobile.png);
         background-position: center;
         background-size: cover;
         padding-block-end: 1rem;
         padding-inline: 0;
     }
-    
-    .overlay{
+
+    .overlay {
         flex-direction: column;
     }
-    .item{
+
+    .item {
         border: none;
         text-align: center;
         font-size: 15px;
     }
-    .overlay{
+
+    .overlay {
         transform: translate(-50%, -120px);
     }
 }
